@@ -27,7 +27,14 @@ fn connect_server(board: &mut Board) -> Result<(), ()> {
         .and_then(|_| check_modem_reply(board, "OK"))
         .and_then(|_| write_modem(board, "AT+STATUS"))
         .and_then(|_| check_modem_reply(board, "OK"))
-        .and_then(|_| check_modem_reply(board, "Initialized"))
+        .and_then(|_| {
+            read_modem(board, None).map(|reply| {
+                println!(
+                    "modem state:{:?}",
+                    core::str::from_utf8(&&reply.bytes[..reply.len])
+                )
+            })
+        })
         .and_then(|_| write_modem(board, "AT+REGISTER"))
         .and_then(|_| check_modem_reply(board, "OK"))
         .and_then(|_| write_modem(board, "AT+TCPCONNECT balloons.thetc.fakedomain,64920"))
