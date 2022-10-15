@@ -6,3 +6,4 @@ edition = "2018"
 [dependencies]
 board = { path = "../board" }
 embedded-hal = "0.2.5"
+nb = "1.0.0"
